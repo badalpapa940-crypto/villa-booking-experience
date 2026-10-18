@@ -1,0 +1,43 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { z } from "zod";
+import { villas, CATEGORIES, categoryLabel } from "@/lib/villas";
+import { VillaCard } from "@/components/VillaCard";
+import { cn } from "@/lib/utils";
+
+export const Route = createFileRoute("/villas/")({
+  validateSearch: z.object({ category: z.string().optional() }),
+  head: () => ({
+    meta: [
+      { title: "All Villas in Goa — Malina Holidays" },
+      { name: "description", content: "Browse every Malina Holidays villa in Goa, filtered by collection." },
+      { property: "og:title", content: "All Villas in Goa — Malina Holidays" },
+      { property: "og:description", content: "Browse every Malina Holidays villa in Goa, filtered by collection." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: VillasPage,
+});
+
+function VillasPage() {
+  const { category } = Route.useSearch();
+  const list = category ? villas.filter((v) => v.categories.includes(category)) : villas;
+  const chip = (active: boolean) =>
+    cn("rounded-full border px-4 py-2 text-sm font-medium transition-colors", active ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-gold");
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 pt-10">
+      <h1 className="text-4xl font-bold">{category ? categoryLabel(category) : "All Villas"}</h1>
+      <p className="mt-2 text-muted-foreground">{list.length} villas in Goa</p>
+      <div className="mt-6 flex flex-wrap gap-2">
+        <Link to="/villas" search={{}} className={chip(!category)}>All</Link>
+        {CATEGORIES.map((c) => (
+          <Link key={c.id} to="/villas" search={{ category: c.id }} className={chip(category === c.id)}>{c.label}</Link>
+        ))}
+      </div>
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {list.map((v) => <VillaCard key={v.slug} villa={v} />)}
+      </div>
+    </div>
+  );
+}
