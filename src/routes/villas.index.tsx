@@ -40,6 +40,12 @@ function VillasPage() {
           <Link key={c.id} to="/villas" search={{ category: c.id }} className={chip(category === c.id)}>{c.label}</Link>
         ))}
       </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-muted-foreground">Sort by BHK:</span>
+        <Link to="/villas" search={{ category }} className={cn("rounded-full border px-3 py-1.5 font-medium transition-colors", !sort ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-gold")}>Default</Link>
+        <Link to="/villas" search={{ category, sort: "bhk-asc" }} className={cn("rounded-full border px-3 py-1.5 font-medium transition-colors", sort === "bhk-asc" ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-gold")}>BHK: Low to High</Link>
+        <Link to="/villas" search={{ category, sort: "bhk-desc" }} className={cn("rounded-full border px-3 py-1.5 font-medium transition-colors", sort === "bhk-desc" ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-gold")}>BHK: High to Low</Link>
+      </div>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {list.map((v) => <VillaCard key={v.slug} villa={v} />)}
       </div>
