@@ -39,7 +39,7 @@ export type BookingDetails = {
   checkIn: string;
   checkOut: string;
   guests: number;
-  message?: string;
+  message?: string | undefined;
 };
 
 export function buildBookingMessage(b: BookingDetails) {
