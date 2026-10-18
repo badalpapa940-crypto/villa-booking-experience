@@ -5,7 +5,10 @@ import { VillaCard } from "@/components/VillaCard";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/villas/")({
-  validateSearch: z.object({ category: z.string().optional() }),
+  validateSearch: z.object({
+    category: z.string().optional(),
+    sort: z.enum(["bhk-asc", "bhk-desc"]).optional(),
+  }),
   head: () => ({
     meta: [
       { title: "All Villas in Goa — Malina Holidays" },
@@ -20,8 +23,10 @@ export const Route = createFileRoute("/villas/")({
 });
 
 function VillasPage() {
-  const { category } = Route.useSearch();
-  const list = category ? villas.filter((v) => v.categories.includes(category)) : villas;
+  const { category, sort } = Route.useSearch();
+  const list = [...(category ? villas.filter((v) => v.categories.includes(category)) : villas)];
+  if (sort === "bhk-asc") list.sort((a, b) => a.bedrooms - b.bedrooms);
+  else if (sort === "bhk-desc") list.sort((a, b) => b.bedrooms - a.bedrooms);
   const chip = (active: boolean) =>
     cn("rounded-full border px-4 py-2 text-sm font-medium transition-colors", active ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-gold");
 
