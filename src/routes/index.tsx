@@ -5,9 +5,9 @@ import { villas, CATEGORIES } from "@/lib/villas";
 import { VillaCard } from "@/components/VillaCard";
 
 const slides = [
-  { tag: "PRIVATE POOL", accent: "Escape", title: "Private Pool Villas", sub: "Wake up to your own pool in North Goa's greenest hideaways.", category: "private-pool", img: villas[3].images[0] },
-  { tag: "WELLNESS & YOGA", accent: "Restore", title: "Wellness Retreats", sub: "Yoga, serene gardens and slow mornings for body and soul.", category: "wellness", img: villas[13].images[0] },
-  { tag: "GRAND STAYS", accent: "Indulge", title: "Luxury Villas", sub: "Spacious 4 and 5 bedroom homes for families and friends.", category: "luxury", img: villas[24].images[0] },
+  { tag: "PRIVATE POOL", accent: "Escape", title: "Private Pool Villas", sub: "Wake up to your own pool in North Goa's greenest hideaways.", category: "private-pool", img: villas[3]?.images[0] ?? "" },
+  { tag: "WELLNESS & YOGA", accent: "Restore", title: "Wellness Retreats", sub: "Yoga, serene gardens and slow mornings for body and soul.", category: "wellness", img: villas[13]?.images[0] ?? "" },
+  { tag: "GRAND STAYS", accent: "Indulge", title: "Luxury Villas", sub: "Spacious 4 and 5 bedroom homes for families and friends.", category: "luxury", img: villas[24]?.images[0] ?? "" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -30,7 +30,7 @@ function Index() {
     const t = setInterval(() => setI((x) => (x + 1) % slides.length), 6000);
     return () => clearInterval(t);
   }, []);
-  const s = slides[i];
+  const s = slides[i] ?? slides[0]!;
   const trending = villas.filter((v) => v.rating >= 4.9).slice(0, 8);
 
   return (
